@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mixtape — Design Target</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08080A; --bg2:#0E0E11; --surface:#131317; --surface2:#17171C; --line:rgba(242,237,228,.09);
+  --line2:rgba(242,237,228,.16); --cream:#F2EDE4; --cream80:rgba(242,237,228,.82); --sec:#9A958B; --ter:#67635B;
+  --amber:#E0A458;
+  --m-mel:#5C6F8C; --m-con:#7A8C5C; --m-joy:#D4A05B; --m-ene:#C75B5B; --m-nos:#B58C7A; --m-eup:#A85BFF;
+  --irid:linear-gradient(120deg,#5B6BFF 0%,#A85BFF 26%,#FF5BA8 50%,#FFB85B 74%,#5BFFB8 100%);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ff:"Fraunces",Georgia,serif; --fs:"Inter",system-ui,sans-serif; --fm:"Space Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:var(--fs);-webkit-font-smoothing:antialiased;line-height:1.55}
+.stage{max-width:1180px;margin:0 auto;padding:56px 28px 120px}
+.eyebrow{font-family:var(--fm);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--sec)}
+.seclabel{font-family:var(--fm);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ter);
+  display:flex;align-items:center;gap:14px;margin:64px 0 16px}
+.seclabel::after{content:"";flex:1;height:1px;background:var(--line)}
+.seclabel .n{color:var(--cream);background:var(--surface2);border:1px solid var(--line);border-radius:6px;
+  padding:3px 9px;font-size:10px}
+
+/* device frame */
+.frame{background:var(--bg);border:1px solid var(--line2);border-radius:20px;overflow:hidden;
+  box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.4)}
+.chrome{height:38px;display:flex;align-items:center;gap:7px;padding:0 16px;background:#0c0c0f;border-bottom:1px solid var(--line)}
+.dot{width:11px;height:11px;border-radius:50%}
+.chrome .url{margin-left:14px;font-family:var(--fm);font-size:11px;color:var(--ter);
+  background:#08080a;border:1px solid var(--line);border-radius:7px;padding:4px 14px}
+.screen{position:relative;background:
+  radial-gradient(120% 80% at 50% -10%, rgba(168,91,255,.06), transparent 55%),
+  radial-gradient(100% 60% at 90% 0%, rgba(91,107,255,.05), transparent 50%),
+  var(--bg)}
+
+/* app header */
+.appbar{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 34px;backdrop-filter:blur(22px);background:rgba(10,10,12,.55);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:30px;height:20px;border-radius:4px;background:#0a0a0c;border:1.4px solid var(--cream);position:relative}
+.mark::before,.mark::after{content:"";position:absolute;top:50%;transform:translateY(-50%);width:7px;height:7px;
+  border-radius:50%;border:1.4px solid var(--cream)}
+.mark::before{left:4px;background:var(--irid)}.mark::after{right:4px;background:var(--irid)}
+.wordmark{font-family:var(--ff);font-style:italic;font-weight:500;font-size:20px;letter-spacing:.01em}
+.nav{display:flex;gap:30px}
+.nav a{color:var(--sec);text-decoration:none;font-size:13.5px;letter-spacing:.01em;transition:color .2s}
+.nav a.on{color:var(--cream)}.nav a:hover{color:var(--cream)}
+.av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#3a3a44,#1c1c22);
+  border:1px solid var(--line2)}
+
+/* diary header zone */
+.pad{padding:42px 40px 48px}
+.h-title{font-family:var(--ff);font-size:50px;font-weight:340;letter-spacing:-.01em;line-height:1;margin:10px 0 0}
+.tools{display:flex;align-items:center;gap:12px;margin-top:30px;flex-wrap:wrap}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:10px;background:rgba(242,237,228,.05);
+  border:1px solid var(--line);border-radius:999px;padding:11px 18px;color:var(--ter);font-size:13.5px;
+  backdrop-filter:blur(10px)}
+.chips{display:flex;gap:9px;flex-wrap:wrap}
+.chip{font-size:12.5px;color:var(--sec);background:rgba(242,237,228,.05);border:1px solid var(--line);
+  border-radius:999px;padding:8px 15px;cursor:pointer;transition:.2s var(--ease)}
+.chip.on{color:var(--cream);background:rgba(242,237,228,.11);border-color:var(--line2)}
+
+/* hero now-playing band */
+.hero{margin:8px 40px 0;display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center;
+  padding:34px;border-radius:18px;position:relative;overflow:hidden;
+  background:linear-gradient(100deg,rgba(199,91,91,.10),rgba(20,20,24,.4) 60%);border:1px solid var(--line)}
+.hero .cov{width:300px;height:300px;border-radius:8px;overflow:hidden;border:1px solid var(--line2);
+  box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.hero .cov img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .now{font-family:var(--fm);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);
+  display:flex;align-items:center;gap:9px}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 0 rgba(224,164,88,.6);
+  animation:p 2.2s infinite}
+@keyframes p{0%{box-shadow:0 0 0 0 rgba(224,164,88,.5)}70%{box-shadow:0 0 0 9px rgba(224,164,88,0)}100%{box-shadow:0 0 0 0 rgba(224,164,88,0)}}
+.hero h2{font-family:var(--ff);font-size:46px;font-weight:360;line-height:1.02;letter-spacing:-.015em;margin:16px 0 4px}
+.hero .art{font-size:16px;color:var(--sec);margin-bottom:18px}
+.quote{font-family:var(--ff);font-style:italic;font-size:21px;line-height:1.5;color:var(--cream80);
+  max-width:560px;border-left:2px solid var(--m-ene);padding-left:18px}
+.hmeta{display:flex;align-items:center;gap:18px;margin-top:22px}
+.stars{color:var(--amber);font-size:15px;letter-spacing:3px}
+.badge{font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:5px 12px;border-radius:999px;font-weight:500}
+
+/* grid */
+.gwrap{padding:0 40px}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;margin-top:14px}
+.card{cursor:pointer}
+.card .ch{position:relative;aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid var(--line);
+  transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.card .ch img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
+.card:hover .ch{transform:translateY(-4px);box-shadow:0 24px 50px rgba(0,0,0,.5);border-color:var(--line2)}
+.card:hover .ch img{transform:scale(1.05)}
+.card .ch .ov{position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(5,5,6,.86));
+  opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:11px}
+.card:hover .ch .ov{opacity:1}
+.mood-dot{position:absolute;top:9px;left:9px;width:8px;height:8px;border-radius:50%}
+.card .ct{font-size:13px;font-weight:500;margin-top:9px;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .ca{font-size:12px;color:var(--sec);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ov .ot{font-size:12px;font-weight:500}.ov .od{font-family:var(--fm);font-size:9.5px;color:#cfc9bf;letter-spacing:.08em}
+
+/* shelf */
+.shelf{display:flex;gap:16px;overflow:hidden;padding:2px 40px 4px}
+.tile{flex:0 0 178px}
+.tile .ch{aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.tile .ch img{width:100%;height:100%;object-fit:cover}
+
+/* ---- dossier ---- */
+.doss{position:relative;min-height:560px;overflow:hidden}
+.doss .bgcov{position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:blur(46px) saturate(1.3);transform:scale(1.25);opacity:.42}
+.doss .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,10,.5),rgba(8,8,10,.78) 45%,var(--bg))}
+.doss .inner{position:relative;z-index:2;padding:40px;display:grid;grid-template-columns:330px 1fr;gap:50px}
+.back{font-family:var(--fm);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sec);margin-bottom:26px;display:inline-block}
+.doss .cov{width:330px;height:330px;border-radius:10px;overflow:hidden;border:1px solid var(--line2);
+  box-shadow:0 40px 100px rgba(0,0,0,.65)}
+.doss .cov img{width:100%;height:100%;object-fit:cover}
+.doss h1{font-family:var(--ff);font-style:italic;font-size:62px;font-weight:340;line-height:.98;letter-spacing:-.02em;margin:10px 0 6px}
+.doss .dart{font-size:18px;color:var(--cream80);margin-bottom:24px}
+.metarow{display:flex;gap:30px;flex-wrap:wrap;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:24px}
+.metarow .k{font-family:var(--fm);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ter);margin-bottom:6px}
+.metarow .v{font-size:14px;color:var(--cream80)}
+.note{font-family:var(--ff);font-style:italic;font-size:20px;line-height:1.6;color:var(--cream80);max-width:560px;margin-bottom:30px}
+/* AI card — the ONLY iridescent moment */
+.ai{position:relative;border-radius:16px;padding:1.4px;background:var(--irid);max-width:560px}
+.ai .in{background:#0d0d11;border-radius:15px;padding:22px 24px}
+.ai .lbl{font-family:var(--fm);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--irid);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.ai h3{font-family:var(--ff);font-size:24px;font-weight:400;margin-bottom:2px}
+.ai .aa{font-size:14px;color:var(--sec);margin-bottom:12px}
+.ai p{font-size:14.5px;line-height:1.6;color:var(--cream80)}
+.acts{display:flex;gap:12px;margin-top:26px}
+.btn{font-size:13.5px;font-weight:500;border-radius:999px;padding:12px 24px;cursor:pointer;border:none;transition:.2s var(--ease)}
+.btn.solid{background:var(--cream);color:#0a0a0c}
+.btn.ghost{background:transparent;color:var(--cream);border:1px solid var(--line2)}
+
+/* ---- add form ---- */
+.form{padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.preview{aspect-ratio:1;border-radius:12px;border:1px dashed var(--line2);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;color:var(--ter);background:rgba(242,237,228,.02);overflow:hidden}
+.preview img{width:100%;height:100%;object-fit:cover}
+.field{margin-bottom:22px}
+.field .k{font-family:var(--fm);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--sec);display:block;margin-bottom:9px}
+.inp{width:100%;background:rgba(242,237,228,.04);border:1px solid var(--line);border-radius:10px;
+  padding:12px 15px;color:var(--cream);font-family:var(--fs);font-size:14px}
+.inp.note{font-family:var(--ff);font-style:italic}
+.moodpick{display:flex;gap:9px;flex-wrap:wrap}
+.mp{font-size:12px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);color:var(--sec);cursor:pointer}
+
+/* ---- taste ---- */
+.taste{padding:46px 40px}
+.tlead{font-family:var(--ff);font-size:34px;font-weight:340;line-height:1.2;max-width:760px;letter-spacing:-.01em}
+.tlead em{font-style:italic;background:var(--irid);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.tgrid{display:grid;grid-template-columns:1.3fr 1fr;gap:26px;margin-top:34px}
+.portrait{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 28px}
+.portrait p{font-size:15px;line-height:1.7;color:var(--cream80);margin-bottom:14px}
+.portrait p:first-of-type::first-letter{font-family:var(--ff);font-size:46px;float:left;line-height:.8;padding:6px 10px 0 0;color:var(--cream)}
+.threads{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.thread{font-size:12px;color:var(--cream80);background:rgba(242,237,228,.06);border:1px solid var(--line);border-radius:999px;padding:6px 13px}
+.nextcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.nextcard .h{padding:18px 22px;border-bottom:1px solid var(--line);font-family:var(--fm);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--sec)}
+.nextcard .b{padding:22px;display:flex;gap:16px;align-items:center}
+.nextcard .b img{width:84px;height:84px;border-radius:6px;border:1px solid var(--line2)}
+
+/* ---- stats ---- */
+.stats{padding:46px 40px}
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.stat .n{font-family:var(--ff);font-size:42px;font-weight:340;line-height:1}
+.stat .l{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sec);margin-top:10px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px;margin-top:18px}
+.bar{flex:1;border-radius:5px 5px 0 0;min-height:8px;opacity:.9}
+.barlabels{display:flex;gap:10px;margin-top:8px}
+.barlabels span{flex:1;text-align:center;font-family:var(--fm);font-size:9.5px;letter-spacing:.08em;color:var(--ter);text-transform:uppercase}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;margin-top:16px}
+.panel .pt{font-family:var(--fm);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--sec);margin-bottom:18px}
+
+/* mobile */
+.mrow{display:flex;gap:30px;flex-wrap:wrap;justify-content:center}
+.phone{width:280px;border-radius:38px;border:1px solid var(--line2);background:#000;padding:9px;
+  box-shadow:0 40px 90px rgba(0,0,0,.6)}
+.pscreen{border-radius:30px;overflow:hidden;background:var(--bg);height:600px;position:relative}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#000;border-radius:0 0 16px 16px;z-index:9}
+.mhead{padding:34px 18px 14px;display:flex;align-items:center;justify-content:space-between}
+.mtitle{font-family:var(--ff);font-size:30px;font-weight:340}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:8px 16px}
+.mgrid .ch{aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.mgrid .ch img{width:100%;height:100%;object-fit:cover}
+.mbar{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:14px 0 22px;
+  background:rgba(10,10,12,.7);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.mbar .it{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ter);text-align:center}
+.mbar .it.on{color:var(--cream)}
+.intro{max-width:680px}
+.intro h1{font-family:var(--ff);font-size:30px;font-weight:340;margin-bottom:10px}
+.intro p{color:var(--sec);font-size:15px;line-height:1.6}
+@media(max-width:760px){.hero,.doss .inner,.form,.tgrid,.statgrid{grid-template-columns:1fr}.grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="intro">
+    <div class="eyebrow">Mixtape · design target</div>
+    <h1 style="margin-top:14px">A personal album diary that reads itself back to you.</h1>
+    <p>Dark, editorial, content-led. The album art is the only loud thing; chrome recedes. Iridescent is reserved strictly for the AI moment. Below: the five screens and the responsive system.</p>
+  </div>
+
+  <!-- ============ SCREEN 1: DIARY ============ -->
+  <div class="seclabel"><span class="n">01</span> Diary — home</div>
+  <div class="frame">
+    <div class="chrome"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="url">mixtape.app / diary</span></div>
+    <div class="screen">
+      <div class="appbar">
+        <div class="brand"><div class="mark"></div><span class="wordmark">Mixtape</span></div>
+        <nav class="nav"><a class="on">Diary</a><a>Taste</a><a>Stats</a></nav>
+        <div class="av"></div>
+      </div>
+      <div class="pad" style="padding-bottom:18px">
+        <div class="eyebrow">Your collection · 18 albums</div>
+        <h1 class="h-title">Diary</h1>
+        <div class="tools">
+          <div class="search">⌕&nbsp; Search your collection</div>
+          <div class="chips"><span class="chip on">All</span><span class="chip">Recently added</span><span class="chip">Top rated</span><span class="chip">By mood</span><span class="chip">Spinning</span></div>
+        </div>
+      </div>
+      <!-- hero -->
+      <div class="hero">
+        <div class="cov"><img data-cov="0" alt=""></div>
+        <div>
+          <div class="now"><span class="pulse"></span> Now spinning</div>
+          <h2 data-t="0"></h2>
+          <div class="art" data-a="0"></div>
+          <div class="quote">The whole record feels like being handed a mask and a mirror at the same time — I keep coming back to the third track at 2am.</div>
+          <div class="hmeta">
+            <span class="stars">★★★★★</span>
+            <span class="badge" style="background:rgba(199,91,91,.18);color:#e88">Energetic</span>
+            <span class="eyebrow">Listened · Fri, May 22</span>
+          </div>
+        </div>
+      </div>
+      <!-- recently added -->
+      <div class="gwrap">
+        <div class="seclabel" style="margin:40px 0 4px"><span class="n">↳</span> Recently added</div>
+        <div class="grid" id="grid1"></div>
+      </div>
+      <!-- mood shelf -->
+      <div style="padding:0 40px"><div class="seclabel" style="margin:40px 0 4px"><span class="n">◈</span> By mood · melancholy</div></div>
+      <div class="shelf" id="shelf1"></div>
+      <div style="height:48px"></div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 2: DOSSIER ============ -->
+  <div class="seclabel"><span class="n">02</span> Album dossier — detail</div>
+  <div class="frame">
+    <div class="chrome"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="url">mixtape.app / album / chromakopia</span></div>
+    <div class="screen doss">
+      <div class="bgcov" id="dossbg"></div>
+      <div class="scrim"></div>
+      <div class="appbar" style="background:transparent;border:none">
+        <div class="brand"><div class="mark"></div><span class="wordmark">Mixtape</span></div>
+        <nav class="nav"><a>Diary</a><a>Taste</a><a>Stats</a></nav>
+        <div class="av"></div>
+      </div>
+      <div class="inner">
+        <div>
+          <a class="back">← Back to diary</a>
+          <div class="cov"><img data-cov="0" alt=""></div>
+        </div>
+        <div>
+          <div class="eyebrow" style="color:var(--amber)">Listened on · Fri · May 22, 2026</div>
+          <h1 data-t="0"></h1>
+          <div class="dart" data-a="0"></div>
+          <div class="metarow">
+            <div><div class="k">Rating</div><div class="v stars" style="font-size:15px">★★★★★</div></div>
+            <div><div class="k">Mood</div><div class="v"><span class="badge" style="background:rgba(199,91,91,.18);color:#e88">Energetic</span></div></div>
+            <div><div class="k">Genre</div><div class="v">Hip-Hop</div></div>
+            <div><div class="k">Decade</div><div class="v">2020s</div></div>
+            <div><div class="k">In collections</div><div class="v">desert island · 2am</div></div>
+          </div>
+          <div class="note">"The whole record feels like being handed a mask and a mirror at the same time — masks slipping, family ghosts, the bravado cracking. I keep coming back to it."</div>
+          <div class="ai">
+            <div class="in">
+              <div class="lbl">✦ What's next — taste concierge</div>
+              <h3>MAGDALENE</h3>
+              <div class="aa">FKA twigs</div>
+              <p>You gravitate toward records that wear vulnerability as armor — Blonde, To Pimp a Butterfly, now CHROMAKOPIA. MAGDALENE turns that same tension into something weightless and devotional. Start with "home with you."</p>
+            </div>
+          </div>
+          <div class="acts"><button class="btn solid">Edit entry</button><button class="btn ghost">Remove from collection</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 3: ADD ============ -->
+  <div class="seclabel"><span class="n">03</span> Add to collection — intake</div>
+  <div class="frame">
+    <div class="chrome"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="url">mixtape.app / add</span></div>
+    <div class="screen">
+      <div class="appbar"><div class="brand"><div class="mark"></div><span class="wordmark">Mixtape</span></div><nav class="nav"><a>Diary</a><a>Taste</a><a>Stats</a></nav><div class="av"></div></div>
+      <div class="pad" style="padding-bottom:8px"><div class="eyebrow">Capture a moment</div><h1 class="h-title" style="font-size:42px">Add to collection</h1></div>
+      <div class="form">
+        <div>
+          <div class="field"><span class="k">Cover</span>
+            <div class="preview"><img data-cov="4" alt=""></div>
+          </div>
+          <div class="field"><span class="k">Cover URL</span><div class="inp" style="color:var(--ter)">Paste any image URL</div></div>
+        </div>
+        <div>
+          <div class="field"><span class="k">Title</span><div class="inp" data-t="4"></div></div>
+          <div class="field"><span class="k">Artist</span><div class="inp" data-a="4"></div></div>
+          <div class="field"><span class="k">Listened on</span><div class="inp">May 28, 2026</div></div>
+          <div class="field"><span class="k">What you felt</span><div class="inp note">First spin on a night train — it scored the window perfectly.</div></div>
+          <div class="field"><span class="k">Mood</span>
+            <div class="moodpick">
+              <span class="mp" style="border-color:var(--m-mel);color:#9fb3d6">Melancholy</span>
+              <span class="mp" style="border-color:var(--m-con);color:#bcd09a">Contemplative</span>
+              <span class="mp" style="background:rgba(212,160,91,.16);border-color:var(--m-joy);color:#e7c389">Joyful</span>
+              <span class="mp" style="border-color:var(--m-nos);color:#d6bca9">Nostalgic</span>
+            </div>
+          </div>
+          <div class="acts"><button class="btn solid">Save to diary</button><button class="btn ghost">Cancel</button></div>
+        </div>
+      </div>
+      <div style="height:36px"></div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 4: TASTE ============ -->
+  <div class="seclabel"><span class="n">04</span> Taste — the AI portrait</div>
+  <div class="frame">
+    <div class="chrome"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="url">mixtape.app / taste</span></div>
+    <div class="screen">
+      <div class="appbar"><div class="brand"><div class="mark"></div><span class="wordmark">Mixtape</span></div><nav class="nav"><a>Diary</a><a class="on">Taste</a><a>Stats</a></nav><div class="av"></div></div>
+      <div class="taste">
+        <div class="eyebrow" style="margin-bottom:14px">✦ Read back · generated from 18 entries</div>
+        <div class="tlead">You are a <em>night listener</em> — drawn to records that turn private ache into something you can dance to.</div>
+        <div class="tgrid">
+          <div class="portrait">
+            <p>Your collection keeps circling the same nerve: vulnerability performed loudly. Frank Ocean, Kendrick, Tyler — confession dressed as bravado. The through-line isn't a genre, it's a temperature. You log most albums late, and you rate the uncomfortable ones highest.</p>
+            <p>Three eras anchor you — the restless 2010s hip-hop renaissance, a thread of 70s funk you return to for warmth, and a small, deliberate stack of melancholy you save for winter. You don't collect hits. You collect records that knew something before you did.</p>
+            <div class="threads"><span class="thread">confession as armor</span><span class="thread">night-coded</span><span class="thread">70s funk warmth</span><span class="thread">slow burners over hits</span></div>
+          </div>
+          <div class="nextcard">
+            <div class="h">Your grounded next listen</div>
+            <div class="b"><img data-cov="6" alt=""><div><h3 style="font-family:var(--ff);font-size:21px;font-weight:400">A Seat at the Table</h3><div class="aa" style="color:var(--sec);font-size:13px">Solange</div></div></div>
+            <div style="padding:0 22px 22px"><p style="font-size:14px;line-height:1.6;color:var(--cream80)">It sits exactly where your taste lives — quiet defiance, warm production, built to be played end to end at night.</p>
+            <button class="btn ghost" style="margin-top:16px;width:100%">Add to wishlist</button></div>
+          </div>
+        </div>
+      </div>
+      <div style="height:36px"></div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 5: STATS ============ -->
+  <div class="seclabel"><span class="n">05</span> Stats — year in review</div>
+  <div class="frame">
+    <div class="chrome"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="url">mixtape.app / stats</span></div>
+    <div class="screen">
+      <div class="appbar"><div class="brand"><div class="mark"></div><span class="wordmark">Mixtape</span></div><nav class="nav"><a>Diary</a><a>Taste</a><a class="on">Stats</a></nav><div class="av"></div></div>
+      <div class="stats">
+        <div class="eyebrow" style="margin-bottom:6px">2026 so far</div><h1 class="h-title" style="font-size:40px;margin-bottom:24px">Year in review</h1>
+        <div class="statgrid">
+          <div class="stat"><div class="n">18</div><div class="l">Albums logged</div></div>
+          <div class="stat"><div class="n">4.3</div><div class="l">Avg rating</div></div>
+          <div class="stat"><div class="n">7</div><div class="l">Day streak</div></div>
+          <div class="stat"><div class="n">3</div><div class="l">Spinning now</div></div>
+        </div>
+        <div class="panel">
+          <div class="pt">Mood breakdown</div>
+          <div class="bars">
+            <div class="bar" style="height:88%;background:var(--m-ene)"></div>
+            <div class="bar" style="height:64%;background:var(--m-mel)"></div>
+            <div class="bar" style="height:52%;background:var(--m-nos)"></div>
+            <div class="bar" style="height:40%;background:var(--m-con)"></div>
+            <div class="bar" style="height:30%;background:var(--m-joy)"></div>
+            <div class="bar" style="height:18%;background:var(--m-eup)"></div>
+          </div>
+          <div class="barlabels"><span>Energetic</span><span>Melancholy</span><span>Nostalgic</span><span>Contemplative</span><span>Joyful</span><span>Euphoric</span></div>
+        </div>
+        <div class="panel" style="display:flex;gap:16px;align-items:center">
+          <div style="font-family:var(--ff);font-style:italic;font-size:20px;color:var(--cream80);flex:1">"Your tape has almost no 80s. Worth a side trip — start with Talking Heads."</div>
+          <button class="btn ghost">See the gap</button>
+        </div>
+      </div>
+      <div style="height:36px"></div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 6: SIGN IN ============ -->
+  <div class="seclabel"><span class="n">06</span> Sign in — auth (default app screen)</div>
+  <div class="frame">
+    <div class="chrome"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="url">mixtape.app / sign-in</span></div>
+    <div class="screen" style="min-height:540px;display:flex;align-items:center;justify-content:center;padding:60px 0">
+      <div style="width:380px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:38px 34px;text-align:center;box-shadow:0 40px 90px rgba(0,0,0,.5)">
+        <div class="mark" style="margin:0 auto 20px"></div>
+        <div class="eyebrow">Welcome back</div>
+        <h2 style="font-family:var(--ff);font-size:30px;font-weight:360;margin:8px 0 28px">Sign in to Mixtape</h2>
+        <div style="text-align:left">
+          <div class="field"><span class="k">Email</span><div class="inp" style="color:var(--ter)">you@example.com</div></div>
+          <div class="field"><span class="k">Password</span><div class="inp" style="color:var(--ter)">••••••••••</div></div>
+        </div>
+        <button class="btn solid" style="width:100%;margin-top:6px">Sign in</button>
+        <div style="margin-top:20px;font-size:13px;color:var(--sec)">New here? <span style="color:var(--cream)">Create an account</span> · <span style="color:var(--sec)">Forgot password?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 7: HOME / DASHBOARD ============ -->
+  <div class="seclabel"><span class="n">07</span> Home — dashboard</div>
+  <div class="frame">
+    <div class="chrome"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="url">mixtape.app / home</span></div>
+    <div class="screen">
+      <div class="appbar"><div class="brand"><div class="mark"></div><span class="wordmark">Mixtape</span></div><nav class="nav"><a class="on">Home</a><a>Diary</a><a>Taste</a><a>Stats</a></nav><div class="av"></div></div>
+      <div class="pad" style="padding-bottom:16px">
+        <div class="eyebrow">Good evening, Ege</div>
+        <h1 class="h-title">Welcome back</h1>
+      </div>
+      <div class="gwrap">
+        <div class="statgrid" style="margin-top:4px">
+          <div class="stat"><div class="n">18</div><div class="l">In your diary</div></div>
+          <div class="stat"><div class="n">3</div><div class="l">Spinning now</div></div>
+          <div class="stat"><div class="n">2</div><div class="l">On the wishlist</div></div>
+          <div class="stat" style="background:linear-gradient(120deg,rgba(168,91,255,.12),var(--surface))"><div class="n" style="font-size:20px;font-family:var(--fs);font-weight:500;line-height:1.3">Ask the<br>concierge ✦</div><div class="l">Your taste, read back</div></div>
+        </div>
+        <div class="seclabel" style="margin:36px 0 4px"><span class="n">↳</span> Jump back in</div>
+        <div class="shelf" id="homeShelf"></div>
+        <div style="height:40px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 8: PROFILE ============ -->
+  <div class="seclabel"><span class="n">08</span> Profile — account (default app screen)</div>
+  <div class="frame">
+    <div class="chrome"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="url">mixtape.app / profile</span></div>
+    <div class="screen">
+      <div class="appbar"><div class="brand"><div class="mark"></div><span class="wordmark">Mixtape</span></div><nav class="nav"><a>Home</a><a>Diary</a><a>Taste</a><a>Stats</a></nav><div class="av"></div></div>
+      <div class="pad">
+        <div style="display:flex;align-items:center;gap:22px">
+          <div class="av" style="width:76px;height:76px"></div>
+          <div><div class="eyebrow">Your account</div><h1 class="h-title" style="font-size:40px;margin-top:6px">Ege Deniz</h1><div style="color:var(--sec);margin-top:4px">ege@example.com · member since 2026</div></div>
+        </div>
+        <div class="statgrid" style="margin-top:32px;grid-template-columns:repeat(3,1fr)">
+          <div class="stat"><div class="n">18</div><div class="l">Albums logged</div></div>
+          <div class="stat"><div class="n">4.3</div><div class="l">Avg rating</div></div>
+          <div class="stat"><div class="n">5</div><div class="l">Collections</div></div>
+        </div>
+        <div class="panel" style="margin-top:16px;padding:0">
+          <div style="padding:18px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between"><span>Edit profile</span><span style="color:var(--ter)">›</span></div>
+          <div style="padding:18px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between"><span>Change password</span><span style="color:var(--ter)">›</span></div>
+          <div style="padding:18px 24px;display:flex;justify-content:space-between"><span style="color:#c77">Sign out</span><span style="color:var(--ter)">›</span></div>
+        </div>
+        <div style="height:40px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MOBILE ============ -->
+  <div class="seclabel"><span class="n">09</span> Responsive — mobile (incl. tabbar nav)</div>
+  <div class="mrow">
+    <div class="phone"><div class="pscreen"><div class="notch"></div>
+      <div class="mhead"><div><div class="eyebrow" style="font-size:9px">18 albums</div><div class="mtitle">Diary</div></div><div class="av"></div></div>
+      <div style="padding:6px 16px 12px"><div class="search" style="padding:9px 14px;font-size:12px">⌕&nbsp; Search</div></div>
+      <div class="mgrid" id="mgrid"></div>
+      <div class="mbar"><div class="it on">◆ Diary</div><div class="it">✦ Taste</div><div class="it">▦ Stats</div><div class="it">+ Add</div></div>
+    </div></div>
+
+    <div class="phone"><div class="pscreen"><div class="notch"></div>
+      <div style="position:relative;height:230px"><img data-cov="0" style="width:100%;height:100%;object-fit:cover" alt="">
+        <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,var(--bg))"></div></div>
+      <div style="padding:0 18px;margin-top:-40px;position:relative">
+        <div class="eyebrow" style="color:var(--amber);font-size:9px">Listened · May 22</div>
+        <div style="font-family:var(--ff);font-style:italic;font-size:34px;line-height:1;margin:6px 0" data-t="0"></div>
+        <div style="color:var(--sec);font-size:13px" data-a="0"></div>
+        <div class="stars" style="margin-top:10px">★★★★★</div>
+        <div style="font-family:var(--ff);font-style:italic;font-size:15px;color:var(--cream80);line-height:1.5;margin-top:14px">"A mask and a mirror at the same time."</div>
+        <div class="ai" style="margin-top:18px"><div class="in" style="padding:16px 18px"><div class="lbl" style="font-size:9px">✦ What's next</div><div style="font-family:var(--ff);font-size:18px">MAGDALENE</div><div style="color:var(--sec);font-size:12px">FKA twigs</div></div></div>
+      </div>
+      <div class="mbar"><div class="it">◆ Diary</div><div class="it">✦ Taste</div><div class="it">▦ Stats</div><div class="it">+ Add</div></div>
+    </div></div>
+
+    <div class="phone"><div class="pscreen"><div class="notch"></div>
+      <div class="mhead"><div class="mtitle" style="font-size:26px">Taste</div><div class="av"></div></div>
+      <div style="padding:6px 18px">
+        <div style="font-family:var(--ff);font-size:23px;line-height:1.25">You are a <em style="font-style:italic;background:var(--irid);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">night listener</em>.</div>
+        <div style="font-size:13.5px;line-height:1.65;color:var(--cream80);margin-top:14px">Your collection circles one nerve: vulnerability performed loudly. You log late, and rate the uncomfortable ones highest.</div>
+        <div class="threads" style="margin-top:16px"><span class="thread" style="font-size:11px">confession as armor</span><span class="thread" style="font-size:11px">night-coded</span><span class="thread" style="font-size:11px">slow burners</span></div>
+        <div class="nextcard" style="margin-top:18px"><div class="b" style="padding:16px"><img data-cov="6" style="width:64px;height:64px"><div><div style="font-family:var(--ff);font-size:16px">A Seat at the Table</div><div style="color:var(--sec);font-size:12px">Solange</div></div></div></div>
+      </div>
+      <div class="mbar"><div class="it">◆ Diary</div><div class="it on">✦ Taste</div><div class="it">▦ Stats</div><div class="it">+ Add</div></div>
+    </div></div>
+  </div>
+
+</div>
+<script>
+const A=[
+{t:"CHROMAKOPIA",a:"Tyler, The Creator",c:"https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b6/ef/ee/b6efeefa-fc99-37d1-ad21-0d769b2a4958/196872796971.jpg/600x600bb.jpg",m:"#C75B5B"},
+{t:"Wish You Were Here",a:"Pink Floyd",c:"https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/aa/e0/ab/aae0ab6a-d906-a189-81bf-70b56aa43f7a/886445635843.jpg/600x600bb.jpg",m:"#5C6F8C"},
+{t:"Lonerism",a:"Tame Impala",c:"https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b7/40/9b/b7409bc6-24fa-b956-5613-4be8dc62be06/12UMGIM64219.rgb.jpg/600x600bb.jpg",m:"#A85BFF"},
+{t:"DAMN.",a:"Kendrick Lamar",c:"https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/ab/16/ef/ab16efe9-e7f1-66ec-021c-5592a23f0f9e/17UMGIM88793.rgb.jpg/600x600bb.jpg",m:"#C75B5B"},
+{t:"In Rainbows",a:"Radiohead",c:"https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/dd/50/c7/dd50c790-99ac-d3d0-5ab8-e3891fb8fd52/634904032463.png/600x600bb.jpg",m:"#7A8C5C"},
+{t:"good kid, m.A.A.d city",a:"Kendrick Lamar",c:"https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/36/86/ec/3686ec99-dec4-0a01-8b74-2d8a9a0263a7/12UMGIM52988.rgb.jpg/600x600bb.jpg",m:"#5C6F8C"},
+{t:"To Pimp a Butterfly",a:"Kendrick Lamar",c:"https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/b5/a6/91/b5a69171-5232-3d5b-9c15-8963802f83dd/15UMGIM15814.rgb.jpg/600x600bb.jpg",m:"#B58C7A"},
+{t:"Random Access Memories",a:"Daft Punk",c:"https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/600x600bb.jpg",m:"#D4A05B"},
+{t:"Discovery",a:"Daft Punk",c:"https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fd/4a/77/fd4a77db-0ebc-d043-41a2-f32fa1bb0fb4/dj.qrikkdwj.jpg/600x600bb.jpg",m:"#D4A05B"},
+{t:"The Marshall Mathers LP",a:"Eminem",c:"https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/ea/ac/03/eaac03e5-8e9d-847e-d5b9-af7dee6a970b/00606949063221.rgb.jpg/600x600bb.jpg",m:"#5C6F8C"},
+{t:"OK Computer",a:"Radiohead",c:"https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/07/60/ba/0760ba0f-148c-b18f-d0ff-169ee96f3af5/634904078164.png/600x600bb.jpg",m:"#7A8C5C"},
+{t:"AM",a:"Arctic Monkeys",c:"https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9c/b5/699cb5d6-115c-ff73-9d26-e57ea4350d72/887828031795.png/600x600bb.jpg",m:"#C75B5B"},
+{t:"Mothership Connection",a:"Parliament",c:"https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/b3/dc/3a/b3dc3af0-b044-6914-1cdf-2ba2c8b36169/00602547748492.rgb.jpg/600x600bb.jpg",m:"#D4A05B"},
+{t:"Blonde on Blonde",a:"Bob Dylan",c:"https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/20/9d/bf/209dbf58-f698-7181-33de-0c29480beba0/074640084126.jpg/600x600bb.jpg",m:"#B58C7A"}
+];
+const moods=["Energetic","Contemplative","Euphoric","Energetic","Contemplative","Melancholy","Nostalgic","Joyful","Joyful","Melancholy","Contemplative","Energetic","Joyful","Nostalgic"];
+function img(el,i){const o=A[i%A.length];el.src=o.c;el.referrerPolicy="no-referrer";el.onerror=()=>{el.style.display='none';el.parentElement.style.background='linear-gradient(135deg,'+o.m+'33,#16161a)';};}
+document.querySelectorAll('[data-cov]').forEach(e=>img(e,+e.dataset.cov));
+document.querySelectorAll('[data-t]').forEach(e=>e.textContent=A[+e.dataset.t].t);
+document.querySelectorAll('[data-a]').forEach(e=>e.textContent=A[+e.dataset.a].a);
+document.getElementById('dossbg').style.backgroundImage=`url(${A[0].c})`;
+function card(o,i){return `<div class="card"><div class="ch"><span class="mood-dot" style="background:${o.m}"></span><img referrerpolicy="no-referrer" src="${o.c}" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,${o.m}33,#16161a)'"><div class="ov"><div class="ot">${o.t}</div><div class="od">${moods[i]||''} · ${o.a}</div></div></div><div class="ct">${o.t}</div><div class="ca">${o.a}</div></div>`;}
+document.getElementById('grid1').innerHTML=A.slice(1,13).map((o,i)=>card(o,i+1)).join('');
+document.getElementById('shelf1').innerHTML=[1,5,9,10,6,3].map(i=>`<div class="tile"><div class="ch"><img referrerpolicy="no-referrer" src="${A[i].c}" onerror="this.parentElement.style.background='linear-gradient(135deg,${A[i].m}33,#16161a)'"></div></div>`).join('');
+document.getElementById('mgrid').innerHTML=[1,3,4,7,5,11].map(i=>`<div class="ch"><img referrerpolicy="no-referrer" src="${A[i].c}" onerror="this.parentElement.style.background='linear-gradient(135deg,${A[i].m}33,#16161a)'"></div>`).join('');
+document.getElementById('homeShelf').innerHTML=[0,3,7,4,12,10].map(i=>`<div class="tile"><div class="ch"><img referrerpolicy="no-referrer" src="${A[i].c}" onerror="this.parentElement.style.background='linear-gradient(135deg,${A[i].m}33,#16161a)'"></div></div>`).join('');
+</script>
+</body>
+</html>
