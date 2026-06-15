@@ -2,7 +2,7 @@
 
 A full-fidelity, single-file design target for **Mixtape** — a personal album-listening diary. Not a description to argue over, a rendered surface to build against: five screens, the complete type and colour system, glass chrome, and one restrained iridescent AI moment.
 
-**Live → [mockup-tau-sage.vercel.app](https://mockup-tau-sage.vercel.app)**
+**Live → [mixtape-design-target.vercel.app](https://mixtape-design-target.vercel.app)**
 
 ![Mixtape design overview](preview/overview.png)
 
